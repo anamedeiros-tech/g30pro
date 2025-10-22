@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Missões - SD Multimarcas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Orange/Red Automotive -->
+    <!-- Application Structure Plan: The structure is a two-column dashboard (lg:grid-cols-3) to separate Action Items (left, 2/3 width) from KPIs and Tracking (right, 1/3 width). This design prioritizes task management and visual feedback. The KPI section now tracks the most urgent goals: Event Maximization and Live preparation. Interactions include filtering tasks, marking completion, and dynamic input/visualization for KPIs. -->
+    <!-- Visualization & Content Choices: 
+        - Event Status (Black Friday) -> Goal: Inform/Track -> Viz: Chart.js Doughnut Chart + Input Field -> Interaction: Manually update progress of event preparation phases. -> Justification: Focuses on the immediate and critical Black Friday campaign.
+        - Live Preparation -> Goal: Track/Organize -> Viz: HTML/CSS Card with Statuses -> Interaction: Status update for the different phases of Live planning. -> Justification: Ensures the new routine of exclusive Lives is formalized.
+        - Tasks -> Goal: Organize/Compare -> Viz: Filterable Cards -> Interaction: Checkbox completion, filter buttons -> Justification: Core project management interface.
+        - Urgent Deadlines -> Goal: Inform -> Viz: Red text, Urgent Pulse CSS class -> Interaction: Visual alert -> Justification: Highlights time-sensitive tasks like the 16/10 tráfego start.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .urgent-pulse {
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="mb-8 text-center">
+            <h1 class="3xl md:text-4xl font-bold text-gray-900">Missões do Mês</h1>
+            <p class="text-lg text-gray-500">Outubro de 2025 - SD Multimarcas</p>
+        </header>
+
+        <section id="progress-section" class="mb-8 p-6 bg-white rounded-xl shadow-lg">
+            <h2 class="text-xl font-semibold mb-3">Progresso Total</h2>
+            <div class="w-full bg-gray-200 rounded-full h-4">
+                <div id="progress-bar" class="bg-orange-600 h-4 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+            <p id="progress-text" class="text-right font-semibold text-orange-700 mt-2">0% Concluído</p>
+        </section>
+
+        <section id="filters-section" class="mb-8 flex flex-wrap gap-2 items-center justify-center">
+             <div class="font-semibold mr-2">Filtrar por:</div>
+             <button data-filter="all" class="filter-btn bg-orange-600 text-white px-4 py-2 rounded-full text-sm">Todos</button>
+             <button data-filter="Comercial" class="filter-btn bg-white text-gray-700 px-4 py-2 rounded-full text-sm border">Comercial & Estrutura</button>
+             <button data-filter="Marketing" class="filter-btn bg-white text-gray-700 px-4 py-2 rounded-full text-sm border">Marketing & Conteúdo</button>
+             <button data-filter="Estratégico" class="filter-btn bg-white text-gray-700 px-4 py-2 rounded-full text-sm border">Estratégico & Gestão</button>
+        </section>
+
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <main class="lg:col-span-2">
+                <h2 class="text-2xl font-bold mb-4">Plano de Ação</h2>
+                 <div class="space-y-2 mb-4 text-gray-600">
+                    <p>O foco principal da SD Multimarcas é a **Maximização do Evento Black Friday** (dias 24 e 25), garantindo a aplicação correta das estratégias de tráfego e a implementação de uma rotina de Lives Fixas para manter o engajamento a longo prazo.</p>
+                </div>
+                <div id="tasks-container" class="space-y-4">
+                </div>
+            </main>
+            
+            <aside class="lg:col-span-1 space-y-8">
+                <!-- KPI 1: STATUS DO EVENTO BLACK FRIDAY -->
+                <div class="bg-white p-6 rounded-xl shadow-lg sticky top-8">
+                    <h2 class="2xl font-bold mb-2">KPI: Status do Evento (Black Friday)</h2>
+                    <p class="text-gray-600 mb-4 text-sm">Acompanhamento das 4 fases essenciais para o sucesso da campanha promocional.</p>
+                    <div class="chart-container">
+                        <canvas id="sdrChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <p class="text-lg font-medium">Fases Concluídas (Meta)</p>
+                        <p class="text-3xl font-bold text-red-700" id="sdr-progress-text">0 / 4</p>
+                        <div class="flex items-center justify-center space-x-2 mt-4">
+                             <input type="number" id="sdr-input" value="0" min="0" max="4" onchange="updateSDRProgress()" class="w-20 text-center border rounded-lg p-2 text-xl font-bold">
+                             <button onclick="updateSDRProgress()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 shadow-md">
+                                Atualizar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KPI 2: PLANEJAMENTO GERAL DE MARKETING -->
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4">Ações de Conteúdo e Live</h2>
+                    <p class="text-gray-600 mb-4 text-sm">Rastreamento das ações de planejamento de conteúdo e eventos de alto impacto.</p>
+                    <div class="space-y-3">
+                        <div class="p-2 bg-gray-100 rounded">
+                            <label class="text-sm font-medium">Status Roteiro Live Black Friday:</label>
+                            <input type="text" id="status-stories" value="Aguardando Definição" class="border rounded-lg p-1 text-sm w-full mt-1">
+                        </div>
+                        <div class="p-2 bg-gray-100 rounded">
+                            <label class="text-sm font-medium">Calendário de Lives Semanais:</label>
+                            <input type="text" id="status-live" value="Aguardando Planejamento" class="border rounded-lg p-1 text-sm w-full mt-1">
+                        </div>
+                    </div>
+                     <button onclick="checkLiveStatus()" class="mt-4 w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 shadow-md">
+                        Marcar Planejamento de Conteúdo como Iniciado
+                    </button>
+                </div>
+            </aside>
+
+        </div>
+
+    </div>
+
+    <script>
+        const SDR_GOAL = 4; 
+        let sdrStepsCompleted = 0; 
+        
+        // Simulação de status
+        const tasksData = [
+            { id: 1, title: "Assistir e Aplicar Estratégias Black Friday", pillar: "Marketing", responsible: "Mazinho", deadline: "Até 17/10", status: "ALERTA - Urgente", completed: false, details: "Assistir e aplicar as estratégias de marketing de 'Black Friday antecipada'." },
+            { id: 2, title: "Iniciar Tráfego Pago da Campanha", pillar: "Marketing", responsible: "Marketing", deadline: "A partir de 16/10", status: "ALERTA - Urgente", completed: false, details: "Lançar a divulgação paga do evento Black Friday para geração de leads e alcance máximo." },
+            { id: 3, title: "Live de Abertura do Evento", pillar: "Marketing", responsible: "Mazinho/Marketing", deadline: "24/10", status: "Pendente", completed: false, details: "Realizar Live no primeiro dia do evento para apresentar detalhes e ofertas exclusivas (evento 24/10)." },
+            { id: 4, title: "Manter Gerenciador de Anúncios Ativo", pillar: "Estratégico", responsible: "Marketing", deadline: "Diariamente", status: "Pendente", completed: false, details: "Otimizar o gerenciador para manter o engajamento e visualizações, aproveitando a plataforma já configurada." },
+            { id: 5, title: "Programar Lives Semanais Fixas", pillar: "Marketing", responsible: "Mazinho/Marketing", deadline: "Imediato", status: "Pendente", completed: false, details: "Definir calendário de lives (ex: 'Fechamento de Mês') para manter o engajamento do público." },
+            { id: 6, title: "Definir Roteiro e Divulgação das Lives", pillar: "Marketing", responsible: "Marketing", deadline: "Imediato", status: "Pendente", completed: false, details: "Planejar Lives curtas (10-15 min) com ofertas exclusivas e criar rotina de divulgação nos stories." },
+            { id: 7, title: "Reunião c/ Especialista em Tráfego Pago", pillar: "Estratégico", responsible: "Mazinho", deadline: "20/10 às 10hrs", status: "Pendente", completed: false, details: "Reunião para alinhamento e otimização das campanhas pagas para a Black Friday." },
+        ];
+        
+        const pillarColors = {
+            'Comercial': 'bg-red-100 text-red-800',
+            'Marketing': 'bg-orange-100 text-orange-800',
+            'Estratégico': 'bg-yellow-100 text-yellow-800',
+        };
+
+        const responsibleColors = {
+            'Mazinho': 'bg-red-200 text-red-800',
+            'Marketing': 'bg-orange-200 text-orange-800',
+            'Gestão': 'bg-blue-100 text-blue-800',
+            'Mazinho/Marketing': 'bg-pink-100 text-pink-800',
+        };
+
+        const tasksContainer = document.getElementById('tasks-container');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const sdrProgressText = document.getElementById('sdr-progress-text');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        let sdrChart;
+
+        // --- KPI 2 Live Logic ---
+        const statusStoriesInput = document.getElementById('status-stories');
+        const statusLiveInput = document.getElementById('status-live');
+        
+        const checkLiveStatus = () => {
+            const initialText = "Aguardando Definição";
+            if (statusStoriesInput.value === initialText) {
+                statusStoriesInput.value = 'Roteiro em Criação';
+                statusStoriesInput.classList.remove('bg-gray-100');
+                statusStoriesInput.classList.add('bg-yellow-100');
+            } else if (statusLiveInput.value === "Aguardando Planejamento") {
+                statusLiveInput.value = 'Calendário em Definição';
+                statusLiveInput.classList.remove('bg-gray-100');
+                statusLiveInput.classList.add('bg-yellow-100');
+            } else {
+                 statusLiveInput.value = 'Calendário Aprovado';
+                 statusLiveInput.classList.remove('bg-yellow-100');
+                 statusLiveInput.classList.add('bg-green-100');
+            }
+        };
+        // --- END KPI 2 Live Logic ---
+
+        // --- SDR Chart Logic ---
+        const updateSDRProgress = () => {
+            const input = document.getElementById('sdr-input');
+            let newCount = parseInt(input.value);
+
+            if (isNaN(newCount) || newCount < 0) {
+                newCount = 0;
+            } else if (newCount > SDR_GOAL) {
+                newCount = SDR_GOAL;
+            }
+            input.value = newCount;
+            sdrStepsCompleted = newCount;
+
+            if (sdrChart) {
+                updateSDRChart();
+            }
+        }
+        
+        const updateSDRChart = () => {
+             if (!sdrChart) return; 
+             sdrChart.data.datasets[0].data = [sdrStepsCompleted, SDR_GOAL - sdrStepsCompleted];
+             sdrChart.update();
+             sdrProgressText.textContent = `${sdrStepsCompleted} / ${SDR_GOAL}`;
+        }
+        
+        const createSDRChart = () => {
+            const ctx = document.getElementById('sdrChart').getContext('2d');
+            const sdrData = {
+                labels: ['Fases Concluídas', 'Meta Restante'],
+                datasets: [{
+                    data: [sdrStepsCompleted, SDR_GOAL - sdrStepsCompleted],
+                    backgroundColor: ['#f97316', '#e5e7eb'], 
+                    borderColor: ['#ffffff', '#ffffff'],
+                    borderWidth: 2
+                }]
+            };
+
+            sdrChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: sdrData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: true
+                        }
+                    }
+                }
+            });
+        }
+        // --- END SDR Chart Logic ---
+
+
+        const renderTasks = (filter = 'all') => {
+            tasksContainer.innerHTML = '';
+            const filteredTasks = tasksData.filter(task => {
+                if (filter === 'all') return true;
+                return task.pillar === filter;
+            });
+
+            if (filteredTasks.length === 0) {
+                tasksContainer.innerHTML = `<div class="text-center p-8 bg-white rounded-lg shadow-md"><p class="text-gray-500">Nenhuma missão encontrada para este filtro.</p></div>`;
+                return;
+            }
+
+            filteredTasks.forEach(task => {
+                const isUrgent = task.status.includes('ALERTA');
+                const taskCard = document.createElement('div');
+                taskCard.className = `p-5 bg-white rounded-xl shadow-md border-l-4 ${task.completed ? 'border-green-400' : (isUrgent ? 'border-red-500 urgent-pulse' : 'border-orange-400')} transition-all`;
+                
+                const pillarColor = pillarColors[task.pillar] || 'bg-gray-100 text-gray-800';
+                const responsibleColor = responsibleColors[task.responsible] || 'bg-gray-100 text-gray-800';
+                
+                let deadlineStatus;
+                if (task.completed) {
+                    deadlineStatus = `<span class="text-xs font-semibold px-2 py-1 rounded-full bg-green-100 text-green-800">Concluído</span>`;
+                } else if (isUrgent) {
+                    deadlineStatus = `<span class="text-xs font-semibold px-2 py-1 rounded-full bg-red-100 text-red-800 border border-red-500">${task.deadline}</span>`;
+                } else {
+                    deadlineStatus = `<span class="text-xs font-semibold text-gray-600">${task.deadline}</span>`;
+                }
+
+
+                taskCard.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-start gap-4">
+                            <input type="checkbox" data-id="${task.id}" class="task-checkbox mt-1 h-5 w-5 rounded border-gray-300 text-red-600 focus:ring-red-500" ${task.completed ? 'checked' : ''}>
+                            <div>
+                                <h3 class="font-bold text-lg ${task.completed ? 'line-through text-gray-400' : ''}">${task.title}</h3>
+                                <p class="text-sm text-gray-600 mt-1">${task.details}</p>
+                            </div>
+                        </div>
+                        <div class="text-right flex-shrink-0 ml-4">
+                            ${deadlineStatus}
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-start gap-2 text-xs">
+                        <span class="font-semibold px-2 py-1 rounded-full ${pillarColor}">${task.pillar}</span>
+                        <span class="font-semibold px-2 py-1 rounded-full ${responsibleColor}">${task.responsible}</span>
+                    </div>
+                `;
+                tasksContainer.appendChild(taskCard);
+            });
+        };
+
+        const updateProgress = () => {
+            const completedTasks = tasksData.filter(task => task.completed).length;
+            const totalTasks = tasksData.length;
+            const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            
+            progressBar.style.width = `${percentage}%`;
+            progressText.textContent = `${percentage}% Concluído`;
+        };
+        
+        tasksContainer.addEventListener('change', (e) => {
+            if (e.target.classList.contains('task-checkbox')) {
+                const taskId = parseInt(e.target.dataset.id);
+                const task = tasksData.find(t => t.id === taskId);
+                if (task) {
+                    task.completed = e.target.checked;
+                    task.status = task.completed ? 'Concluído' : task.status.replace('Concluído - ', ''); 
+                    updateProgress();
+                    renderTasks(document.querySelector('.filter-btn.bg-orange-600').dataset.filter);
+                }
+            }
+        });
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-orange-600', 'text-white');
+                    b.classList.add('bg-white', 'text-gray-700');
+                });
+                btn.classList.add('bg-orange-600', 'text-white');
+                btn.classList.remove('bg-white', 'text-gray-700');
+                renderTasks(btn.dataset.filter);
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createSDRChart();
+            updateSDRProgress(); 
+            renderTasks();
+            updateProgress();
+        });
+    </script>
+
+</body>
+</html>
