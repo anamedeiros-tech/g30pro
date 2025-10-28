@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Dalgallo Autos</title>
+    <!-- Carrega o Tailwind CSS da CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Fonte Inter */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* slate-100 */
+        }
+        /* Estilo para um scroll suave */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0; /* slate-200 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8; /* slate-400 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b; /* slate-500 */
+        }
+        /* Estilização base do Card */
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.5rem; /* rounded-lg */
+            border: 1px solid #e2e8f0; /* border-slate-200 */
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* shadow-lg */
+            padding: 1.5rem; /* p-6 */
+        }
+    </style>
+</head>
+<body class="text-slate-800 p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Cabeçalho -->
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-slate-900">Dashboard de Acompanhamento</h1>
+            <p class="text-lg text-slate-600">Dalgallo Autos - Plano de Ação G30</p>
+        </header>
+
+        <!-- Seção Principal: Agendamentos e Ações -->
+        <main>
+            <!-- LINHA 1: Agendamentos e Ações Imediatas -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Coluna 1: Agendamentos Imediatos -->
+                <section class="lg:col-span-1 flex flex-col space-y-6">
+                    <h2 class="text-xl font-semibold text-slate-900 border-b border-slate-300 pb-2">Agendamentos Imediatos</h2>
+
+                    <!-- Card: Análise de Instagram -->
+                    <div class="card">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="p-3 rounded-full bg-pink-100 text-pink-600">
+                                <!-- Ícone do Instagram -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900">Análise de Instagram</h3>
+                                <span class="text-sm font-medium text-slate-600">Dia: 29/10 - 11hrs</span>
+                            </div>
+                        </div>
+                        <ul class="list-none space-y-3 text-sm">
+                            <li>
+                                <strong class="text-slate-800">Quem:</strong>
+                                <p class="text-slate-600">Todos os funcionários que irão participar do marketing da loja</p>
+                            </li>
+                            <li>
+                                <strong class="text-slate-800">Conteúdo:</strong>
+                                <p class="text-slate-600">calendário de postagens, roteiros dos vídeos...</p>
+                            </li>
+                            <li>
+                                <strong class="text-slate-800">Tarefa pós reunião:</strong>
+                                <p class="text-slate-600">Deixar vídeos vistos na reunião prontos para edição</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Card: Edição de Vídeo -->
+                    <div class="card">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                                <!-- Ícone de Edição (Tesoura) -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" y1="4" x2="8.12" y2="15.88"></line><line x1="14.47" y1="14.48" x2="20" y2="20"></line><line x1="8.12" y1="8.12" x2="12" y2="12"></line></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900">Edição de Vídeo (Capcut)</h3>
+                                <span class="text-sm font-medium text-slate-600">Dia: 31/10 - 14hrs</span>
+                            </div>
+                        </div>
+                        <ul class="list-none space-y-3 text-sm">
+                            <li>
+                                <strong class="text-slate-800">Quem:</strong>
+                                <p class="text-slate-600">Definir quem ficará responsável para edição de video, participar ela + o dono (pode participar todos do marketing, mas importante ter alguém a frente da operação)</p>
+                            </li>
+                            <li>
+                                <strong class="text-slate-800">Conteúdo:</strong>
+                                <p class="text-slate-600">Edição de Vídeo no Capcut</p>
+                            </li>
+                            <li>
+                                <strong class="text-slate-800">Preparação para reunião:</strong>
+                                <p class="text-slate-600">aula de edição de video do zero: <a href="https://g30educacaoautomotiva.curseduca.pro/m/lessons/g30-class-programa-g30" target="_blank" class="text-blue-600 hover:underline">Link da Aula</a></p>
+                            </li>
+                             <li>
+                                <strong class="text-slate-800">Obs:</strong>
+                                <p class="text-slate-600">Deixar conta no Capcut pro pronta para uso e estar com videos vistos na analise de Instagram prontos para edição.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Coluna 2: Ações Preparatórias -->
+                <section class="lg:col-span-1 flex flex-col">
+                    <h2 class="text-xl font-semibold text-slate-900 border-b border-slate-300 pb-2 mb-6">Ações para irem se planejando</h2>
+
+                    <!-- Card: Tráfego Pago -->
+                    <div class="card flex-grow">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                                <!-- Ícone de Tráfego (Megafone) -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.612a4.5 4.5 0 0 1 0-7.224m18 7.224a4.5 4.5 0 0 0 0-7.224M7 3.612v16.776M17 3.612v16.776"></path><path d="M12 6a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3"></path><path d="M12 18a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3"></path><path d="M12 18a3 3 0 0 0-3-3"></path><path d="M12 6a3 3 0 0 1 3 3"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900">Tráfego Pago</h3>
+                                <span class="text-sm font-medium text-green-600">Próxima Etapa</span>
+                            </div>
+                        </div>
+                        <ul class="list-disc list-inside text-sm text-slate-700 space-y-2">
+                            <li>Para reunião de tráfego pago, é preciso ter acesso ao gerenciador de anúncios;</li>
+                            <li>Solicitar o acesso (caso não tenham) para empresa terceirizada;</li>
+                            <li>Para uma reunião mais produtiva, assistir o módulo de tráfego pago na plataforma: <a href="https://g30educacaoautomotiva.curseduca.pro/m/d/missao-g30-trafego-pago" target="_blank" class="text-blue-600 hover:underline">Link do Módulo</a></li>
+                            <li>Definir quem ficará a frente do tráfego pago.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Coluna 3: Para Live -->
+                <section class="lg:col-span-1 flex flex-col">
+                    <h2 class="text-xl font-semibold text-slate-900 border-b border-slate-300 pb-2 mb-6">Preparação para Live</h2>
+                    
+                    <!-- Card Ações Live -->
+                    <div class="card flex-grow">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="p-3 rounded-full bg-red-100 text-red-600">
+                               <!-- Ícone de Live -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 10.63V7.5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-3.13"></path><path d="M21 12.5v-1a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900">Ações para Live</h3>
+                            </div>
+                        </div>
+                         <ul class="list-disc list-inside text-sm text-slate-700 space-y-2">
+                            <li>Separar os modelos que serão apresentados (sugestão para os veículos em mais tempo no estoque).</li>
+                            <li>Criar oportunidade especial neles.</li>
+                            <li>Apresentar ao Gideão os modelos e pedir o roteiro da live.</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+
+            <!-- LINHA 2: Planejamento de Aniversário -->
+            <section class="mt-8">
+                <h2 class="text-xl font-semibold text-slate-900 border-b border-slate-300 pb-2 mb-6">Planejamento para o aniversário da loja</h2>
+
+                <!-- Card Ação Imediata -->
+                <div class="card mb-6">
+                    <h3 class="text-lg font-semibold text-red-600 mb-2">Ação Imediata</h3>
+                    <p class="text-sm text-slate-700">Iniciar a divulgação do mês de aníversário com um video institucional, divulgado em todas as plataformas que tem conteúdo da loja. (Sugestão de roteiro de video no final do planejamento)</p>
+                </div>
+
+                <!-- Grid das Fases -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <!-- Fase 1: Pré-lançamento -->
+                    <div class="card flex flex-col">
+                        <div class="mb-3">
+                            <span class="inline-block bg-gray-200 text-gray-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Fase 1</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-900 mb-2">1. Pré-lançamento</h3>
+                        <p class="text-sm font-medium text-slate-600 mb-3">(01 a 10/11)</p>
+                        <ul class="list-disc list-inside text-sm text-slate-700 space-y-2 flex-grow">
+                            <li>Stories e posts anunciando o mês de aniversário: “A maior festa do ano está chegando na [Nome da Loja]!”</li>
+                            <li>Teasers da roleta premiada e prêmios exclusivos.</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Fase 2: Divulgação da Live -->
+                    <div class="card flex flex-col">
+                        <div class="mb-3">
+                            <span class="inline-block bg-blue-200 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Fase 2</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-900 mb-2">2. Divulgação da Live</h3>
+                        <p class="text-sm font-medium text-slate-600 mb-3">(11 a 15/11)</p>
+                        <ul class="list-disc list-inside text-sm text-slate-700 space-y-2 flex-grow">
+                            <li><strong>Dia 11:</strong> Anuncie oficialmente a live do dia 15: “Live de aniversário com descontos e prêmios exclusivos! Salva a data!”</li>
+                            <li><strong>Dias 12 a 14:</strong>
+                                <ul class="list-disc list-inside ml-4 mt-1">
+                                    <li>Bastidores dos preparativos da live.</li>
+                                    <li>Depoimentos de clientes, equipe animada e prêmios da roleta.</li>
+                                    <li>Contagem regressiva nos stories.</li>
+                                    <li>Enquetes: “Qual prêmio você quer ganhar na live?”</li>
+                                </ul>
+                            </li>
+                             <li><strong>Dia 15:</strong>
+                                <ul class="list-disc list-inside ml-4 mt-1">
+                                    <li>Última chamada nos stories e posts: “É hoje! Live especial de aniversário às [hora]. Não perca!”</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Fase 3: Semana de Descontos -->
+                    <div class="card flex flex-col">
+                        <div class="mb-3">
+                            <span class="inline-block bg-green-200 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Fase 3</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-900 mb-2">3. Semana de Descontos</h3>
+                        <p class="text-sm font-medium text-slate-600 mb-3">(15 a 21/11)</p>
+                         <ul class="list-disc list-inside text-sm text-slate-700 space-y-2 flex-grow">
+                            <li><strong>Live no dia 15:</strong>
+                                <ul class="list-disc list-inside ml-4 mt-1">
+                                    <li>Apresente descontos, gire a roleta ao vivo, mostre carros em oferta e incentive fechamento rápido.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Posts e stories diários mostrando:</strong>
+                                <ul class="list-disc list-inside ml-4 mt-1">
+                                    <li>Ofertas do dia</li>
+                                    <li>Ganhadores da roleta</li>
+                                    <li>Senso de urgência: “Só até dia 21!”</li>
+                                </ul>
+                            </li>
+                             <li>Vídeos curtos de clientes aproveitando a promoção.</li>
+                             <li>Ligar para os clientes inativos informando da semana de oportunidade para trocar de carro, fazendo agendamentos.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Fase 4: Pós-semana -->
+                    <div class="card flex flex-col">
+                        <div class="mb-3">
+                            <span class="inline-block bg-yellow-200 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Fase 4</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-900 mb-2">4. Pós-semana</h3>
+                        <p class="text-sm font-medium text-slate-600 mb-3">(22 a 30/11)</p>
+                        <ul class="list-disc list-inside text-sm text-slate-700 space-y-2 flex-grow">
+                            <li>Mostre os prêmios já entregues, depoimentos e clima de comemoração.</li>
+                            <li>Reforce: “A roleta premiada continua até o fim do mês! Corre pra não ficar de fora.”</li>
+                            <li>Chame para visitar a loja e celebrar junto.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+             <!-- LINHA 3: Roteiros -->
+            <section class="mt-8">
+                <h2 class="text-xl font-semibold text-slate-900 border-b border-slate-300 pb-2 mb-6">Sugestão de Roteiro</h2>
+
+                <!-- Card Roteiro -->
+                <div class="card">
+                    <h3 class="text-lg font-semibold text-slate-900 mb-4">Vídeo Institucional de Aniversário</h3>
+                    
+                    <p class="text-sm text-slate-700 font-semibold">🎉 “É mês de aniversário na [Nome da Loja]!” 🎉</p>
+                    <br>
+                    <p class="text-sm text-slate-600">[Imagens da loja decorada, equipe sorrindo, balões e clima de festa]</p>
+                    <br>
+                    <p class="text-sm text-slate-700">“Durante todo o mês de novembro, você tem motivo extra pra comemorar com a gente: a nossa Roleta Premiada está valendo em todas as compras e serviços!”</p>
+                    <br>
+                    <p class="text-sm text-slate-600">[Mostre a roleta girando, prêmios e clientes felizes]</p>
+                    <br>
+                    <p class="text-sm text-slate-700">“São brindes exclusivos, descontos especiais e muitas surpresas para você sair ganhando sempre!”</p>
+                    <br>
+                    <p class="text-sm text-slate-600">[Equipe acena e convida]</p>
+                    <br>
+                    <p class="text-sm text-slate-700">“Venha celebrar com a gente, aproveite o mês de aniversário e garanta seu prêmio na Roleta Premiada! Esperamos por você!”</p>
+                    <br>
+                    <hr class="my-4 border-slate-200">
+                    <p class="text-sm text-slate-700"><strong class="text-slate-800">Dica:</strong> Use trilha animada, destaque a roleta e prêmios reais, e finalize com a equipe convidando para a loja.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
+
